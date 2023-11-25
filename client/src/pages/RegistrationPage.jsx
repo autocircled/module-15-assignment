@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container"
 import AppNavbar from "../components/common/AppNavbar"
 
-const CreateProfilePage = () => {
+const RegistrationPage = () => {
     return (
         <>
             <AppNavbar />
@@ -12,4 +12,4 @@ const CreateProfilePage = () => {
     )
 }
 
-export default CreateProfilePage
+export default RegistrationPage

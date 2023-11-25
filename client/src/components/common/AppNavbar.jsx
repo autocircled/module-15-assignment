@@ -13,7 +13,7 @@ function AppNavbar() {
                     </Navbar.Brand>
                     <Nav className="me-auto">
                         <NavLink className='nav-link' to="/">Home</NavLink>
-                        <NavLink className='nav-link' to="/add-new">Register</NavLink>
+                        <NavLink className='nav-link' to="/register">Register</NavLink>
                     </Nav>
                 </Container>
             </Navbar>
