@@ -1,9 +1,16 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import CreateProfilePage from './pages/CreateProfilePage'
 function App() {
 
   return (
-    <>
-      <h1>Hello React</h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/add-new" element={<CreateProfilePage />} />
+      </Routes>
+
+    </BrowserRouter>
   )
 }
 

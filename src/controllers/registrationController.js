@@ -1,7 +1,7 @@
 const Student = require('../models/StudentModel');
 
 // Read All
-exports.getAll = async (req, res) => {
+exports.getAllStudents = async (req, res) => {
     try {
         const users = await Student.find();
         res.status(200).json({
