@@ -18,6 +18,10 @@ const StudentSchema = new Schema({
         type: Date,
         required: true
     },
+    nationality: {
+        type: String,
+        required: true
+    },
     address: {
         type: String,
         required: true
@@ -30,15 +34,11 @@ const StudentSchema = new Schema({
         type: String,
         required: true
     },
-    courses: {
-        type: String,
-        required: true
-    },
-    relationship: {
-        type: String,
-        required: true
-    },
     admissionDate: {
+        type: Date,
+        required: true
+    },
+    courses: {
         type: String,
         required: true
     }
