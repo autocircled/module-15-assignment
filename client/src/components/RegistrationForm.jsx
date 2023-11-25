@@ -1,27 +1,26 @@
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CreateStudentProfile } from '../Services/apiRequest';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import moment from 'moment';
 
 function RegistrationForm() {
 
     const [formData, setFormData] = useState({
-        firstName: 'asdasd',
-        lastName: 'asdasd',
-        gender: 'male',
-        dateOfBirth: '01-10-1987',
-        nationality: 'sadasdas',
-        address: 'sadasd asd asd as',
-        email: 'asdasda@asdasd.com',
-        phone: '45454545545',
-        admissionDate: '25-11-2023',
-        courses: 'MERN'
+        firstName: '',
+        lastName: '',
+        gender: '',
+        dateOfBirth: '',
+        nationality: '',
+        address: '',
+        email: '',
+        phone: '',
+        admissionDate: '',
+        courses: ''
     });
     const [formErrors, setFormErrors] = useState({})
 
-    const notify = () => toast("Registration Successful! Go to Home Page");
+    const notify = () => toast("Registration is success!");
 
 
 
@@ -43,18 +42,18 @@ function RegistrationForm() {
             CreateStudentProfile(formData).then(res => {
                 if (res) {
                     console.log(res);
-                    // setFormData({
-                    //     firstName: '',
-                    //     lastName: '',
-                    //     gender: '',
-                    //     dateOfBirth: '',
-                    //     nationality: '',
-                    //     address: '',
-                    //     email: '',
-                    //     phone: '',
-                    //     admissionDate: '',
-                    //     courses: ''
-                    // });
+                    setFormData({
+                        firstName: '',
+                        lastName: '',
+                        gender: '',
+                        dateOfBirth: '',
+                        nationality: '',
+                        address: '',
+                        email: '',
+                        phone: '',
+                        admissionDate: '',
+                        courses: ''
+                    });
 
                     notify()
                 }
@@ -109,7 +108,6 @@ function RegistrationForm() {
     return (
         <>
             <h1 className='text-center mb-3 display-5'>Register</h1>
-            <pre>{JSON.stringify(formData, undefined, 2)}</pre>
             <Form className='w-75 mx-auto' onSubmit={submitHandler}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md={6} className="mb-3" controlId='firstName'>
