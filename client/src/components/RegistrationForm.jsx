@@ -8,29 +8,21 @@ import moment from 'moment';
 function RegistrationForm() {
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        gender: '',
-        dateOfBirth: '',
-        nationality: '',
-        address: '',
-        email: '',
-        phone: '',
-        admissionDate: '',
-        courses: ''
+        firstName: 'asdasd',
+        lastName: 'asdasd',
+        gender: 'male',
+        dateOfBirth: '01-10-1987',
+        nationality: 'sadasdas',
+        address: 'sadasd asd asd as',
+        email: 'asdasda@asdasd.com',
+        phone: '45454545545',
+        admissionDate: '25-11-2023',
+        courses: 'MERN'
     });
     const [formErrors, setFormErrors] = useState({})
 
-    const [isSubmit, setIsSubmit] = useState(false);
-
     const notify = () => toast("Registration Successful! Go to Home Page");
 
-    useEffect(() => {
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            console.log(formData);
-        }
-
-    }, [formErrors]);
 
 
     const changeHandler = (e) => {
@@ -46,34 +38,24 @@ function RegistrationForm() {
 
         setFormErrors(validate(formData));
 
-        console.log(formData);
-        setFormData({
-            ...formData,
-            dateOfBirth: moment(formData.dateOfBirth).format("YYYY-MM-DD"),
-        })
-        setFormData({
-            ...formData,
-            admissionDate: moment(formData.admissionDate).format("YYYY-MM-DD")
-        })
-        console.log(formData);
-        setIsSubmit(true);
-
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
+        if (Object.keys(formErrors).length === 0) {
+            console.log("Form Submitted");
             CreateStudentProfile(formData).then(res => {
                 if (res) {
-                    setFormData({
-                        firstName: '',
-                        lastName: '',
-                        gender: '',
-                        dateOfBirth: '',
-                        nationality: '',
-                        address: '',
-                        email: '',
-                        phone: '',
-                        admissionDate: '',
-                        courses: ''
-                    });
-                    setIsSubmit(false);
+                    console.log(res);
+                    // setFormData({
+                    //     firstName: '',
+                    //     lastName: '',
+                    //     gender: '',
+                    //     dateOfBirth: '',
+                    //     nationality: '',
+                    //     address: '',
+                    //     email: '',
+                    //     phone: '',
+                    //     admissionDate: '',
+                    //     courses: ''
+                    // });
+
                     notify()
                 }
             }).catch(err => {
@@ -127,7 +109,7 @@ function RegistrationForm() {
     return (
         <>
             <h1 className='text-center mb-3 display-5'>Register</h1>
-
+            <pre>{JSON.stringify(formData, undefined, 2)}</pre>
             <Form className='w-75 mx-auto' onSubmit={submitHandler}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md={6} className="mb-3" controlId='firstName'>
@@ -157,7 +139,7 @@ function RegistrationForm() {
                     <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor='dateOfBirth'>Date of Birth</Form.Label>
-                            <Form.Control type="tel" placeholder="DD-MM-YYYY" id="dateOfBirth" name="dateOfBirth" onChange={changeHandler} />
+                            <Form.Control type="tel" placeholder="DD-MM-YYYY" id="dateOfBirth" name="dateOfBirth" onChange={changeHandler} value={formData.dateOfBirth} />
                             <Form.Text className="text-danger">{formErrors.dateOfBirth}</Form.Text>
                         </Form.Group>
                     </Col>
@@ -199,7 +181,7 @@ function RegistrationForm() {
                     <Col md={6}>
                         <Form.Group className='mb-3'>
                             <Form.Label htmlFor='admissionDate'>Admission Date</Form.Label>
-                            <Form.Control type="tel" placeholder="DD-MM-YYYY" id="admissionDate" name="admissionDate" onChange={changeHandler} />
+                            <Form.Control type="tel" placeholder="DD-MM-YYYY" id="admissionDate" name="admissionDate" onChange={changeHandler} value={formData.admissionDate} />
                             <Form.Text className="text-danger">{formErrors.admissionDate}</Form.Text>
                         </Form.Group>
                     </Col>
