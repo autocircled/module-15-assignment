@@ -37,7 +37,7 @@ const StudentsTable = () => {
             if (result.isConfirmed) {
                 (async () => {
                     await DeleteStudentProfile({ '_id': id }).then(res => {
-                        console.log("Deleted", res)
+
                         if (res) {
                             (async () => {
                                 Swal.fire('Deleted!', '', 'success')
