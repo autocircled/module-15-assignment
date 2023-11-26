@@ -5,6 +5,8 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { CiRead } from "react-icons/ci";
 import { createPortal } from 'react-dom'
 import Swal from 'sweetalert2'
+import RegistrationForm from './RegistrationForm';
+import SingleStudentProfile from './SingleStudentProfile';
 
 const StudentsTable = () => {
 
@@ -12,8 +14,13 @@ const StudentsTable = () => {
 
     // Modal
     const [showModal, setShowModal] = useState(false);
+    const [modalAction, setModalAction] = useState([]); // [id, action]
     const modalClose = () => setShowModal(false);
-    const modalShow = () => setShowModal(true);
+    const modalShow = (id, action) => {
+        setShowModal(true);
+        console.log(id, action);
+        setModalAction([id, action]); // [id, action);
+    }
 
     // SweetAlert
     const [swalShown, setSwalShown] = useState(false)
@@ -90,8 +97,8 @@ const StudentsTable = () => {
                             <td>{`${student.firstName} ${student.lastName}`}</td>
                             <td>{student.address}</td>
                             <td className='d-flex justify-content-center'>
-                                <Button variant="outline-primary" className='me-2' onClick={modalShow}><CiRead /></Button>
-                                <Button variant="outline-info" className='me-2' onClick={modalShow} ><FaEdit /></Button>
+                                <Button variant="outline-primary" className='me-2' onClick={() => modalShow(student._id, 'view')}><CiRead /></Button>
+                                <Button variant="outline-info" className='me-2' onClick={() => modalShow(student._id, 'edit')} ><FaEdit /></Button>
                                 <Button variant="outline-danger" onClick={() => showSwal(student._id)}><FaTrash /></Button>
                             </td>
                         </tr>
@@ -99,19 +106,17 @@ const StudentsTable = () => {
                 </tbody>
             </table>
 
+            {/* Modal */}
             <Modal show={showModal} onHide={modalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    {modalAction[1] === 'edit' && <Modal.Title>Update Student Profile</Modal.Title>}
+                    {modalAction[1] === 'view' && <Modal.Title>Student Details</Modal.Title>}
                 </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={modalClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={modalClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
+                <Modal.Body>
+                    {modalAction[1] === 'edit' && <RegistrationForm action='edit' id={modalAction[0]} />}
+                    {modalAction[1] === 'view' && <SingleStudentProfile id={modalAction[0]} />}
+                </Modal.Body>
+
             </Modal>
 
             {swalShown &&

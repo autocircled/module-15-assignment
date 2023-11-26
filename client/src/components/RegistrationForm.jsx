@@ -4,7 +4,7 @@ import { CreateStudentProfile } from '../Services/apiRequest';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function RegistrationForm() {
+function RegistrationForm(prop) {
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -107,7 +107,7 @@ function RegistrationForm() {
 
     return (
         <>
-            <h1 className='text-center mb-3 display-5'>Register</h1>
+            {prop.action === 'register' && <h1 className='text-center mb-3 display-5'>Register</h1>}
             <Form className='w-75 mx-auto' onSubmit={submitHandler}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md={6} className="mb-3" controlId='firstName'>
@@ -194,7 +194,8 @@ function RegistrationForm() {
 
 
                 <Button variant="primary" type="submit">
-                    Register Now
+                    {prop.action === 'register' && 'Register Now'}
+                    {prop.action === 'edit' && 'Update'}
                 </Button>
             </Form>
             <ToastContainer

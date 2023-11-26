@@ -7,7 +7,7 @@ const RegistrationPage = () => {
         <>
             <AppNavbar />
             <Container className='py-5'>
-                <RegistrationForm />
+                <RegistrationForm action='register' />
             </Container>
         </>
     )

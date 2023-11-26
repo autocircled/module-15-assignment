@@ -13,6 +13,19 @@ export const GetStudentsList = () => {
         return false;
     });
 }
+export const GetStudentByID = (id) => {
+    const EndPoint = 'http://localhost:5000/api/v1/student/' + id;
+    return axios.get(EndPoint).then((res) => {
+        if (res.status === 200) {
+            return res.data['data'];
+        } else {
+            return false;
+        }
+    }).catch((err) => {
+        console.log(err)
+        return false;
+    });
+}
 
 export const CreateStudentProfile = (postBody) => {
     const EndPoint = 'http://localhost:5000/api/v1/create-profile/';
