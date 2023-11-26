@@ -17,6 +17,21 @@ exports.getAllStudents = async (req, res) => {
     }
 }
 
+exports.getStudentByID = async (req, res) => {
+    try {
+        const users = await Student.findById(req.params.id);
+        res.status(200).json({
+            success: true,
+            data: users
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
 // Create One
 exports.createProfile = async (req, res) => {
     try {
