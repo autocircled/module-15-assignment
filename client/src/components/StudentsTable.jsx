@@ -18,7 +18,6 @@ const StudentsTable = () => {
     const modalClose = () => setShowModal(false);
     const modalShow = (id, action) => {
         setShowModal(true);
-        console.log(id, action);
         setModalAction([id, action]); // [id, action);
     }
 
@@ -30,7 +29,8 @@ const StudentsTable = () => {
             didClose: async () => {
                 setSwalShown(false)
             },
-            title: 'Do you want to delete it?',
+            title: 'Are you sure?',
+            icon: 'warning',
             showDenyButton: true,
             confirmButtonText: 'Yes',
             denyButtonText: 'No',
@@ -121,14 +121,9 @@ const StudentsTable = () => {
 
             {swalShown &&
                 createPortal(
-                    // <Link to="/register" onClick={() => Swal.close()}>
-                    //     Go to Register
-                    // </Link>,
-                    <>
-                        <button onClick={() => Swal.close()}>Go to Register</button>,
-                        <p>Hello there</p>
-                    </>,
+                    <p>You won&apos;t be able to revert this!</p>,
                     Swal.getHtmlContainer()
+
                 )
             }
 

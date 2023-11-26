@@ -1,8 +1,9 @@
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useState } from 'react';
-import { CreateStudentProfile } from '../Services/apiRequest';
+import { useEffect, useState } from 'react';
+import { CreateStudentProfile, GetStudentByID, UpdateStudentProfile } from '../Services/apiRequest';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment/moment';
 
 function RegistrationForm(prop) {
 
@@ -20,9 +21,46 @@ function RegistrationForm(prop) {
     });
     const [formErrors, setFormErrors] = useState({})
 
-    const notify = () => toast("Registration is success!");
+    const notify = (txt) => toast(txt);
 
+    // Filling the update form with data
+    useEffect(() => {
+        if (prop.action === 'edit') {
+            GetStudentByID(prop.id).then(res => {
+                let { firstName, lastName, gender, dateOfBirth, nationality, address, email, phone, admissionDate, courses } = res;
 
+                dateOfBirth = moment(dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                admissionDate = moment(admissionDate, 'YYYY-MM-DD').format('DD-MM-YYYY');
+                setFormData({
+                    firstName,
+                    lastName,
+                    gender,
+                    dateOfBirth,
+                    nationality,
+                    address,
+                    email,
+                    phone,
+                    admissionDate,
+                    courses
+                });
+            })
+        }
+
+        return () => {
+            setFormData({
+                firstName: '',
+                lastName: '',
+                gender: '',
+                dateOfBirth: '',
+                nationality: '',
+                address: '',
+                email: '',
+                phone: '',
+                admissionDate: '',
+                courses: ''
+            })
+        }
+    }, [prop.action, prop.id])
 
     const changeHandler = (e) => {
         let { name, value } = e.target;
@@ -37,11 +75,9 @@ function RegistrationForm(prop) {
 
         setFormErrors(validate(formData));
 
-        if (Object.keys(formErrors).length === 0) {
-            console.log("Form Submitted");
+        if (Object.keys(formErrors).length === 0 && prop.action === 'register') {
             CreateStudentProfile(formData).then(res => {
                 if (res) {
-                    console.log(res);
                     setFormData({
                         firstName: '',
                         lastName: '',
@@ -55,7 +91,15 @@ function RegistrationForm(prop) {
                         courses: ''
                     });
 
-                    notify()
+                    notify('Registration is success!')
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        } else if (Object.keys(formErrors).length === 0 && prop.action === 'edit') {
+            UpdateStudentProfile(formData, prop.id).then(res => {
+                if (res) {
+                    notify('Update Done!')
                 }
             }).catch(err => {
                 console.log(err);
@@ -108,7 +152,7 @@ function RegistrationForm(prop) {
     return (
         <>
             {prop.action === 'register' && <h1 className='text-center mb-3 display-5'>Register</h1>}
-            <Form className='w-75 mx-auto' onSubmit={submitHandler}>
+            <Form className={`mx-auto ${prop.action === 'edit' ? 'w-100' : 'w-75'}`} onSubmit={submitHandler}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md={6} className="mb-3" controlId='firstName'>
                         <Form.Label>First name</Form.Label>
