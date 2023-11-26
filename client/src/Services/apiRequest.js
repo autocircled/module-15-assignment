@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const GetStudentsList = () => {
-    const EndPoint = 'http://localhost:5000/api/v1/students-list/';
+    const EndPoint = '/api/v1/students-list/';
     return axios.get(EndPoint).then((res) => {
         if (res.status === 200) {
             return res.data['data'];
@@ -14,7 +14,7 @@ export const GetStudentsList = () => {
     });
 }
 export const GetStudentByID = (id) => {
-    const EndPoint = 'http://localhost:5000/api/v1/student/' + id;
+    const EndPoint = '/api/v1/student/' + id;
     return axios.get(EndPoint).then((res) => {
         if (res.status === 200) {
             return res.data['data'];
@@ -28,7 +28,7 @@ export const GetStudentByID = (id) => {
 }
 
 export const CreateStudentProfile = (postBody) => {
-    const EndPoint = 'http://localhost:5000/api/v1/create-profile/';
+    const EndPoint = '/api/v1/create-profile/';
     return axios.post(EndPoint, postBody).then((res) => {
         if (res.status === 200) {
             return res.data['data'];
@@ -42,7 +42,7 @@ export const CreateStudentProfile = (postBody) => {
 }
 
 export const UpdateStudentProfile = (postBody, id) => {
-    const EndPoint = 'http://localhost:5000/api/v1/update-profile/' + id;
+    const EndPoint = '/api/v1/update-profile/' + id;
     return axios.post(EndPoint, postBody).then((res) => {
         if (res.status === 200) {
             return true;
@@ -58,7 +58,7 @@ export const UpdateStudentProfile = (postBody, id) => {
 export const DeleteStudentProfile = (postBody) => {
     // console.log(postBody);
     // return;
-    const EndPoint = 'http://localhost:5000/api/v1/delete-profile/';
+    const EndPoint = '/api/v1/delete-profile/';
     return axios.post(EndPoint, postBody).then((res) => {
         if (res.status === 200) {
             return res.data['data'];
