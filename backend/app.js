@@ -61,15 +61,18 @@ mongoose
     .catch(err => console.log(err));
 
 // Routes
+
 app.use('/api/v1', router);
+app.use('/', (req, res) => {
+    res.send('<h1 style="text-align:center">Module 15 Assignment</h1>')
+})
 
 
-
-// Frontend routing management
-app.use(express.static('client/dist'));
-app.get('*', function (req, res) {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-});
+// // Frontend routing management
+// app.use(express.static('client/dist'));
+// app.get('*', function (req, res) {
+//     res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+// });
 
 
 module.exports = app
