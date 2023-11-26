@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { GetStudentsList } from '../Services/apiRequest'
+import { DeleteStudentProfile, GetStudentsList } from '../Services/apiRequest'
 import { Button, Modal } from 'react-bootstrap'
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CiRead } from "react-icons/ci";
 import { createPortal } from 'react-dom'
-import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const StudentsTable = () => {
@@ -18,29 +17,37 @@ const StudentsTable = () => {
 
     // SweetAlert
     const [swalShown, setSwalShown] = useState(false)
-    const showSwal = () => {
+    const showSwal = (id) => {
         Swal.fire({
             didOpen: () => setSwalShown(true),
-            didClose: () => setSwalShown(false),
+            didClose: async () => {
+                setSwalShown(false)
+            },
             title: 'Do you want to delete it?',
-            // showClass: {
-            //     popup: 'animate__animated animate__fadeInDown'
-            // },
-            // hideClass: {
-            //     popup: 'animate__animated animate__fadeOutUp'
-            // },
             showDenyButton: true,
             confirmButtonText: 'Yes',
             denyButtonText: 'No',
             customClass: {
-                actions: 'my-actions',
+                actions: 'delete-action',
                 cancelButton: 'order-1 right-gap',
                 confirmButton: 'order-2',
                 denyButton: 'order-3',
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire('Deleted!', '', 'success')
+                (async () => {
+                    await DeleteStudentProfile({ '_id': id }).then(res => {
+                        console.log("Deleted", res)
+                        if (res) {
+                            (async () => {
+                                Swal.fire('Deleted!', '', 'success')
+                                setStudents('')
+                                const updatedData = await GetStudentsList();
+                                setStudents(updatedData)
+                            })()
+                        }
+                    });
+                })()
             } else if (result.isDenied) {
                 setSwalShown(false)
             }
@@ -85,7 +92,7 @@ const StudentsTable = () => {
                             <td className='d-flex justify-content-center'>
                                 <Button variant="outline-primary" className='me-2' onClick={modalShow}><CiRead /></Button>
                                 <Button variant="outline-info" className='me-2' onClick={modalShow} ><FaEdit /></Button>
-                                <Button variant="outline-danger" onClick={showSwal}><FaTrash /></Button>
+                                <Button variant="outline-danger" onClick={() => showSwal(student._id)}><FaTrash /></Button>
                             </td>
                         </tr>
                     ))}
@@ -113,7 +120,7 @@ const StudentsTable = () => {
                     //     Go to Register
                     // </Link>,
                     <>
-                        <button onClick={() => alert("Deleted")}>Go to Register</button>,
+                        <button onClick={() => Swal.close()}>Go to Register</button>,
                         <p>Hello there</p>
                     </>,
                     Swal.getHtmlContainer()

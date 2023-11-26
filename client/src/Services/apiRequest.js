@@ -43,10 +43,12 @@ export const UpdateStudentProfile = (postBody, id) => {
 }
 
 export const DeleteStudentProfile = (postBody) => {
+    // console.log(postBody);
+    // return;
     const EndPoint = 'http://localhost:5000/api/v1/delete-profile/';
     return axios.post(EndPoint, postBody).then((res) => {
         if (res.status === 200) {
-            return true;
+            return res.data['data'];
         } else {
             return false;
         }
