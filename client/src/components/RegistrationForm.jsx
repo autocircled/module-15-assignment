@@ -4,6 +4,18 @@ import { CreateStudentProfile, GetStudentByID, UpdateStudentProfile } from '../S
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment/moment';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Select from 'react-select';
+
+import '../assets/css/RegistrationForm.css';
+
+const options = [
+    { value: 'Bahamian', label: 'Bahamian' },
+    { value: 'Bahraini', label: 'Bahraini' },
+    { value: 'Bangladeshi', label: 'Bangladeshi' },
+    { value: 'Barbadian', label: 'Barbadian' },
+];
 
 function RegistrationForm(prop) {
 
@@ -20,6 +32,8 @@ function RegistrationForm(prop) {
         courses: ''
     });
     const [formErrors, setFormErrors] = useState({})
+    const [dob, setDob] = useState(null);
+    const [adm, setAdm] = useState(new Date());
 
     const notify = (txt) => toast(txt);
 
@@ -28,7 +42,8 @@ function RegistrationForm(prop) {
         if (prop.action === 'edit') {
             GetStudentByID(prop.id).then(res => {
                 let { firstName, lastName, gender, dateOfBirth, nationality, address, email, phone, admissionDate, courses } = res;
-
+                setDob(new Date(dateOfBirth));
+                setAdm(new Date(admissionDate));
                 dateOfBirth = moment(dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY');
                 admissionDate = moment(admissionDate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                 setFormData({
@@ -76,6 +91,7 @@ function RegistrationForm(prop) {
         setFormErrors(validate(formData));
 
         if (Object.keys(formErrors).length === 0 && prop.action === 'register') {
+            console.log(formData);
             CreateStudentProfile(formData).then(res => {
                 if (res) {
                     setFormData({
@@ -181,14 +197,34 @@ function RegistrationForm(prop) {
                     <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor='dateOfBirth'>Date of Birth</Form.Label>
-                            <Form.Control type="tel" placeholder="DD-MM-YYYY" id="dateOfBirth" name="dateOfBirth" onChange={changeHandler} value={formData.dateOfBirth} />
+                            <DatePicker
+                                selected={dob}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="DD-MM-YYYY"
+                                name="dateOfBirth"
+                                className="form-control"
+                                id='dateOfBirth'
+                                onChange={(date) => {
+                                    setDob(date)
+                                    changeHandler({ target: { name: 'dateOfBirth', value: moment(date).format('YYYY-MM-DD') } })
+                                }} />
                             <Form.Text className="text-danger">{formErrors.dateOfBirth}</Form.Text>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
                         <Form.Group className="mb-3" controlId="nationality">
                             <Form.Label>Nationality</Form.Label>
-                            <Form.Control type="text" placeholder="Nationality" name="nationality" value={formData.nationality} onChange={changeHandler} />
+                            <Select
+                                defaultValue={formData.nationality}
+                                id='nationality'
+                                name='nationality'
+                                onChange={(e) => {
+                                    setFormData({
+                                        ...formData,
+                                        nationality: e.value
+                                    })
+                                }}
+                                options={options} />
                             <Form.Text className="text-danger">{formErrors.nationality}</Form.Text>
                         </Form.Group>
                     </Col>
@@ -223,7 +259,17 @@ function RegistrationForm(prop) {
                     <Col md={6}>
                         <Form.Group className='mb-3'>
                             <Form.Label htmlFor='admissionDate'>Admission Date</Form.Label>
-                            <Form.Control type="tel" placeholder="DD-MM-YYYY" id="admissionDate" name="admissionDate" onChange={changeHandler} value={formData.admissionDate} />
+                            <DatePicker
+                                selected={adm}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="DD-MM-YYYY"
+                                name="admissionDate"
+                                className="form-control"
+                                id='admissionDate'
+                                onChange={(date) => {
+                                    setAdm(date)
+                                    changeHandler({ target: { name: 'admissionDate', value: moment(date).format('YYYY-MM-DD') } })
+                                }} />
                             <Form.Text className="text-danger">{formErrors.admissionDate}</Form.Text>
                         </Form.Group>
                     </Col>

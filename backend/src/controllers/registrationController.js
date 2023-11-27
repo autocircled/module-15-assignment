@@ -43,8 +43,7 @@ exports.createProfile = async (req, res) => {
                 message: "All fields are required"
             })
         }
-        dateOfBirth = moment(dateOfBirth, 'DD-MM-YYYY').format('YYYY-MM-DD');
-        admissionDate = moment(admissionDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+
         const user = await Student.create({
             firstName,
             lastName,
@@ -82,15 +81,7 @@ exports.updateProfile = async (req, res) => {
                 message: "All fields are required"
             })
         }
-        const isInvalidDob = moment(dateOfBirth, 'DD-MM-YYYY', true).isValid();
-        const isInvalidAdm = moment(admissionDate, 'DD-MM-YYYY', true).isValid();
-        if (isInvalidDob) {
-            dateOfBirth = moment(dateOfBirth, 'DD-MM-YYYY').format('YYYY-MM-DD');
-        }
 
-        if (isInvalidAdm) {
-            admissionDate = moment(admissionDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
-        }
         const user = await Student.findByIdAndUpdate(req.params.id, {
             firstName,
             lastName,

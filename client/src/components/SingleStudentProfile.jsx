@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import { GetStudentByID } from '../Services/apiRequest'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 const SingleStudentProfile = (props) => {
     const [userData, setUserData] = useState({})
@@ -30,7 +31,11 @@ const SingleStudentProfile = (props) => {
                 {Object.keys(userData).map((key, index) => (
                     <tr key={index}>
                         <th>{key}</th>
-                        <td>{userData[key]}</td>
+                        <td>
+                            {
+                                key == 'dateOfBirth' || key == 'admissionDate' ? moment(userData[key]).format('DD-MM-YYYY')
+                                    : key == 'createdAt' || key == 'updatedAt' ? moment(userData[key]).format('DD-MM-YYYY hh:mm A')
+                                        : userData[key]}</td>
                     </tr>
                 ))}
             </tbody>
