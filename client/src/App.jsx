@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage'
 import RegistrationPage from './pages/RegistrationPage'
 function App() {
 
+  // test comment
   return (
     <BrowserRouter>
       <Routes>
